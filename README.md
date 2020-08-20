@@ -29,6 +29,10 @@ curl "http://localhost:50002/" -H "Content-Type: text/html" --data-binary "<html
 * 安全考虑，HTML中不能包含任何script元素，不能包含任何外部链接，包括`<link>`，`<img>`以及`<style>`元素中的背景等
 * 建议使用base64方式将图片编码在HTML正文中
 * 因为直接使用真实浏览器渲染，可以使用SVG等高级特性
+* 关于Linux平台上的中文字体，请参见我的以下两篇文章在Linux平台上安装puppeteer + Chromium + 中文字体支持
+  * [CentOS7最简puppeteer安装备忘](https://segmentfault.com/a/1190000020920596)
+  * [Ubuntu18最简puppeteer安装备忘](https://segmentfault.com/a/1190000022305046)
+* 关于Emoji表情符支持，可以安装Google的[Noto Emoji字体](https://www.google.com/get/noto/)，查找emoji即可。有彩色和单色两种，请根据需求安装
 
 ### 关于性能
 * 本项目预先启动一个无头浏览器在后台随时待命
