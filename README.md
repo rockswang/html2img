@@ -1,5 +1,5 @@
 # HTML2IMG
-Use puppeteer driven Headless Chrome to generate images for arbitary HTML<br/>
+Use puppeteer-driven Headless-Chromium to generate images for arbitary HTML<br/>
 
 使用puppeteer驱动Chrome无头浏览器将任意HTML内容渲染成图片
 
@@ -38,5 +38,5 @@ curl "http://localhost:50002/" -H "Content-Type: text/html" --data-binary "<html
 * 本项目预先启动一个无头浏览器在后台随时待命
 * 每次来新请求，使用池机制在现成页面上渲染HTML内容
 * 经测试，主要性能瓶颈在抓图步骤，这个跟运行平台有关，Windows尚可，Linux极佳；据说在MacOS上比较慢
-* 在Windows10（小米Pro笔记本） > 5FPS
+* Windows10（小米Pro笔记本） > 5FPS
 * Ubuntu18（腾讯云1核2G屌丝配置）> 15FPS
