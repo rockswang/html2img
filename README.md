@@ -26,7 +26,7 @@ curl "http://localhost:50002/" -H "Content-Type: text/html" --data-binary "<html
 ``` 
 
 ### 其它说明
-* 安全考虑，HTML中不能包含任何script元素，style元素中不能包含任何外链！
+* 安全考虑，HTML中不能包含任何script元素，不能包含任何外部链接，包括`<link>`，`<img>`以及`<style>`元素中的背景等
 * 建议使用base64方式将图片编码在HTML正文中
 * 因为直接使用真实浏览器渲染，可以使用SVG等高级特性
 

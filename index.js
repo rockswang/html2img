@@ -33,6 +33,9 @@ app.listen(50002, function () {
 function checkHtml (html) {
   const $ = cheerio.load(html)
   if ($('script').length) return '不能包含任何脚本元素'
+  if ($('link').length) return '不能包含任何外链资源'
+  if ($('iframe').length || $('frame').length) return '不能包含frame/iframe'
+  if (Array.from($('img')).map(n => $(n).src).find(src => !/^data:image/.test(src))) return '不能包含任何外部图片'
   let style = Array.from($('style')).map(s => $(s).html()).join('\n')
   if (!style.trim()) return
   try {
