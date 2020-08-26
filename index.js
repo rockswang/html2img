@@ -35,7 +35,7 @@ function checkHtml (html) {
   if ($('script').length) return '不能包含任何脚本元素'
   if ($('link').length) return '不能包含任何外链资源'
   if ($('iframe').length || $('frame').length) return '不能包含frame/iframe'
-  if (Array.from($('img')).map(n => $(n).src).find(src => !/^data:image/.test(src))) return '不能包含任何外部图片'
+  // if (Array.from($('img')).map(n => $(n).attr('src')).find(src => !/^data:image/.test(src))) return '不能包含任何外部图片'
   let style = Array.from($('style')).map(s => $(s).html()).join('\n')
   if (!style.trim()) return
   try {
@@ -65,13 +65,16 @@ async function newHtml (html, type, encoding) {
   const tm = Date.now()
   let error, res
   try {
-    await page.setContent(`<html><body><div id="__html2img_container__" style="display:inline-block">${html}</div></body></html>`)
+    await page.setContent(`<html><body style="width:4000px;overflow:scroll"><div id="__html2img_container__" style="display:inline-block">${html}</div></body></html>`)
     const clip = await page.evaluate(() => {
       const element = document.querySelector('#__html2img_container__')
       const { x, y, width, height } = element.getBoundingClientRect()
       return { x, y, width, height }
     })
-    res = await page.screenshot({ clip, type, encoding })
+    const opt = { clip, type, encoding }
+    if (type === 'jpeg') opt.quality = 80
+    if (type === 'png') opt.omitBackground = true
+    res = await page.screenshot(opt)
   } catch (e) {
     error = e
   }
@@ -84,7 +87,8 @@ async function newHtml (html, type, encoding) {
   const tm = Date.now()
   browser = await puppeteer.launch({
     // headless: false,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    defaultViewport: { width: 4000, height: 6000 }
   })
   log.info(`启动无头浏览器，耗时${Date.now() - tm}ms`)
   process.on('exit', () => {
