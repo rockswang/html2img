@@ -7,14 +7,16 @@ const cheerio = require('cheerio')
 
 const log = bunyan.createLogger({ name: 'html2img', streams: [{ level: 'debug', stream: process.stdout }] })
 
+const noCheck = process.argv.includes('--no-check')
+
 const app = express()
 
-app.use(bodyParser.text({ type: 'text/*' }))
+app.use(bodyParser.text({ type: 'text/*', limit: '4mb' }))
 app.post('/', async (req, res) => {
-  const { type = 'png', encoding = 'binary' } = req.query
+  const { type = 'png', encoding = 'binary', __NO_CHECK__ = 0 } = req.query
   const text = req.body
   log.debug({ text }, '请求')
-  const err = checkHtml(text)
+  const err = !noCheck && !__NO_CHECK__ && checkHtml(text)
   if (err) return res.status(400).send(err)
   const img = await newHtml(text, type, encoding).catch(e => e)
   if (img instanceof Error) {
